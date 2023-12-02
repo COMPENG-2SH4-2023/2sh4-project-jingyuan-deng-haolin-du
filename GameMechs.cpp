@@ -1,86 +1,110 @@
-#include "GameMechs.h"
+#include "gameMechanics.h"
+#include "MacUILib.h"
 
-GameMechs::GameMechs()
+gameMechanics::gameMechanics()
 {
-    input = '\0';
-    exitFlag = false;
-    loseFlag = false;
-
     boardSizeX = 30;
     boardSizeY = 15;
 
+    input = ' ';
+    exitFlag = false;
+    loseFlag = false;
     score = 0;
-
 }
 
-GameMechs::GameMechs(int boardX, int boardY)
+gameMechanics::gameMechanics(int boardX, int boardY)
 {
-    input = '\0';
-    exitFlag = false;
-        
     boardSizeX = boardX;
     boardSizeY = boardY;
 
+    input = ' ';
+    exitFlag = false;
+    loseFlag = false;
     score = 0;
-    
 }
 
 // do you need a destructor?
-GameMechs::~GameMechs(){
-    
-}
 
 
-bool GameMechs::getExitFlagStatus()
+
+bool gameMechanics::getExitFlagStatus()
 {
     return exitFlag;
 }
 
-bool GameMechs::getLoseFlagStatus()
+bool gameMechanics::getLoseFlagStatus()
 {
     return loseFlag;
 }
 
-char GameMechs::getInput()
+char gameMechanics::getInput()
 {
-    return input;
+    if (MacUILib_hasChar()) {
+        return MacUILib_getChar();
+    }
+    return 0;
 }
 
-int GameMechs::getBoardSizeX()
+int gameMechanics::getBoardSizeX()
 {
     return boardSizeX;
 }
 
-int GameMechs::getBoardSizeY()
+int gameMechanics::getBoardSizeY()
 {
     return boardSizeY;
 }
 
+int gameMechanics::getScore()
+{
+    return score;
+}
 
-void GameMechs::setExitTrue()
+
+void gameMechanics::setExitTrue()
 {
     exitFlag = true;
 }
 
-void GameMechs::setLoseFlag()
+void gameMechanics::setLoseFlag()
 {
     loseFlag = true;
 }
 
-void GameMechs::setInput(char this_input)
+void gameMechanics::setInput(char this_input)
 {
     input = this_input;
 }
 
-void GameMechs::clearInput()
+void gameMechanics::clearInput()
 {
-    input = '\0';
+    MacUILib_getChar();
 }
 
-int GameMechs::getScore(){
-    retrun score;
+void gameMechanics::incrementScore()
+{
+    score += 1;
 }
 
-void GameMechs::incrementScore(){
-    score ++;
+void gameMechanics::generateFood(objPos blockOff)
+{
+    while(true)
+    {
+        int x = rand() % boardSizeX;
+        int y = rand() % boardSizeX;
+        objPos obj(x, y, ' ');
+        if (blockOff.isPosEqual(&obj))
+        {
+            continue;
+        }
+        foodPos = obj;
+        break;
+    }
 }
+
+void gameMechanics::getFoodPos(objPos& returnPos)
+{
+    returnPos = foodPos;
+}
+
+
