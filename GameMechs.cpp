@@ -1,18 +1,18 @@
 #include "GameMechs.h"
 
+// Default constructor for GameMechs
 GameMechs::GameMechs()
 {
-    input = '\0';
-    exitFlag = false;
-    loseFlag = false;
+    input = '\0'; // Initialize input with a null character
+    exitFlag = false; // Flag to control game exit, initially set to false
+    loseFlag = false; // Flag to indicate losing condition, initially set to false
 
-    boardSizeX = 30;
-    boardSizeY = 15;
+    boardSizeX = 30; // Default horizontal size of the game board
+    boardSizeY = 15; // Default vertical size of the game board
 
-    score = 0;
-
+    score = 0; // Initialize score to 0
 }
-
+// Overloaded constructor for GameMechs allowing custom board sizes
 GameMechs::GameMechs(int boardX, int boardY)
 {
     input = '\0';
@@ -26,7 +26,7 @@ GameMechs::GameMechs(int boardX, int boardY)
 }
 
 // do you need a destructor?
-
+// A destructor for GameMechs is not necessarily required here unless you have dynamically generated GameMechs.
 
 
 bool GameMechs::getExitFlagStatus()

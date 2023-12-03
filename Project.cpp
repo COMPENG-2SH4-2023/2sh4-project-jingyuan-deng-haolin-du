@@ -46,12 +46,13 @@ void Initialize(void)
 {
     MacUILib_init();
     MacUILib_clearScreen();
-    
+    // Generate initial food items on the board
     food->generateFood(p->getPlayerPos(),m->getBoardSizeX(), m->getBoardSizeY());
 }
 
 void GetInput(void)
-{
+{   
+    // Check if a character is available and set it as the current input
    if(MacUILib_hasChar()!=0){
         m->setInput(MacUILib_getChar());
     }
@@ -62,9 +63,10 @@ void RunLogic(void)
     if(m->getInput() == ' '){
         m->setExitFlag(true);
     }
+    // Update player direction and clear input if any input is given
     if(m->getInput() != '\0')  // if not null character
     {
-       p->updatePlayerDir();
+       p->updatePlayerDir();    
        m->clearInput();
     }
     p->movePlayer();
@@ -163,7 +165,7 @@ void CleanUp(void)
     delete[] p;
     delete[] food;
 }
-
+// Check if a coordinate is part of the player's body
 bool inSnackBody(objPosArrayList* body, int x, int y)
 {
 	objPos part;

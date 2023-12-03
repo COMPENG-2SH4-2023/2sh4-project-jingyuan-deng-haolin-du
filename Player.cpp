@@ -108,12 +108,14 @@ objPos Player::getHead()
     playerPosList->getHeadElement(t);
     return t;
 }
-
+    
 void Player::eatFood()
 {
     objPos tmp;
-    playerPosList->getHeadElement(tmp);
-    int x = tmp.getX(), y = tmp.getY();
+    playerPosList->getHeadElement(tmp); // Get the current head position
+    int x = tmp.getX(), y = tmp.getY(); // Extract x and y coordinates
+
+    // Update the head position based on the current direction
     switch (myDir)
     {
     case UP:
@@ -129,38 +131,45 @@ void Player::eatFood()
         x += 1;
         break;
     default:
-        return;
+        return; // Exit if direction is undefined
     }
+
+    // Wrap around the game board if the new position is out of bounds
     if (x < 1) {
         x = gameMecRef->getBoardSizeX() - 2;
     }
-    else if (x >= gameMecRef->getBoardSizeX()-1) {
+    else if (x >= gameMecRef->getBoardSizeX() - 1) {
         x = 1;
     }
 
     if (y < 1) {
         y = gameMecRef->getBoardSizeY() - 2;
     }
-    else if (y >= gameMecRef->getBoardSizeY()-1) {
+    else if (y >= gameMecRef->getBoardSizeY() - 1) {
         y = 1;
     }
+
+    // Set the new head position and insert it at the head of the list
     tmp.setObjPos(x, y, tmp.getSymbol());
     playerPosList->insertHead(tmp);
 }
 
+// Method to check if the player has eaten itself
 bool Player::eatSelf()
 {
     objPos head, body;
-    playerPosList->getHeadElement(head);
+    playerPosList->getHeadElement(head); // Get the head position
+
+    // Iterate through the player's body to check for collision with the head
     for (int i = 1; i < playerPosList->getSize(); i++)
     {
         playerPosList->getElement(body, i);
         if (body.isPosEqual(&head)) {
-            gameMecRef->setLoseFlag(true);
+            gameMecRef->setLoseFlag(true); // Set the lose flag if collision is detected
             return true;
         }
     }
-    return false;
+    return false; // Return false if no collision is detected
 }
 
 
