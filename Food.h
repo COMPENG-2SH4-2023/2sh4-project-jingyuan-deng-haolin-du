@@ -10,13 +10,14 @@
 
 class Food{
     private:
-        objPos* foodPos;
+        objPosArrayList* foodList;
     public:
         Food();
         ~Food();
 
         void generateFood(objPosArrayList* blockOff,const int xRange, const int yRange);
-        void getFoodPos(objPos &returnPos);
+        void getFoodPos(objPos &returnPos, int element);
+        objPosArrayList* getFoodList();
 };
 
 #endif

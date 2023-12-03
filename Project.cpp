@@ -68,11 +68,17 @@ void RunLogic(void)
        m->clearInput();
     }
     p->movePlayer();
-    objPos normFood;
-    food->getFoodPos(normFood);
+    objPos normFood,supFood;
+    food->getFoodList()->getHeadElement(normFood);
+    food->getFoodList()->getTailElement(supFood);
     if((p->getHead().x == normFood.getX())&&(p->getHead().y == normFood.getY())){
         p->eatFood();
-        m->incrementScore();
+        m->incrementScore(1);
+        food->generateFood(p->getPlayerPos(),m->getBoardSizeX(), m->getBoardSizeY());
+    }
+    if((p->getHead().x == supFood.getX())&&(p->getHead().y == supFood.getY())){
+        p->eatFood();
+        m->incrementScore(10);
         food->generateFood(p->getPlayerPos(),m->getBoardSizeX(), m->getBoardSizeY());
     }
     if(p->eatSelf()==true){
@@ -94,14 +100,18 @@ void DrawScreen(void)
     else{
         MacUILib_clearScreen();
         int board[m->getBoardSizeX()][m->getBoardSizeY()];
-        objPos nFood;
-        food->getFoodPos(nFood);
+        objPos sFood, nFood;
+        food->getFoodList()->getHeadElement(nFood);
+        food->getFoodList()->getTailElement(sFood);
         for(int i = 0; i<m->getBoardSizeX(); i++){
             for(int j = 0; j<m->getBoardSizeY(); j++){
                 if(inSnackBody(p->getPlayerPos(), i, j) == true){
                     board[i][j] = 1;
                 }
-                else if(i == nFood.x && j == nFood.y){
+                else if(sFood.getX()==i&&sFood.getY()==j){
+                    board[i][j] = 3;
+                }
+                else if(nFood.getX()==i&&nFood.getY()==j){
                     board[i][j] = 2;
                 }
                 else{
@@ -121,7 +131,10 @@ void DrawScreen(void)
                     MacUILib_printf("%c", p->getHead().symbol);
                 }
                 else if(board[i][j] == 2){
-                    MacUILib_printf("%c", nFood.symbol);
+                    MacUILib_printf("%c", 'o');
+                }
+                else if(board[i][j] == 3){
+                    MacUILib_printf("%c", sFood.getSymbol());
                 }
                 else if (board[i][j]==0){
                     MacUILib_printf(" ");
