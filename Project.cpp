@@ -18,6 +18,7 @@ void RunLogic(void);
 void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
+bool inSnackBody(objPosArrayList* obj, int x, int y);
 
 GameMechs *m = new GameMechs();
 Player *p = new Player(m);
@@ -28,7 +29,7 @@ int main(void)
 
     Initialize();
 
-    while(m->getExitFlagStatus() == false&&m->getLoseFlagStatus() == false)  
+    while(m->getExitFlagStatus() == false)  
     {
         GetInput();
         RunLogic();
@@ -58,6 +59,9 @@ void GetInput(void)
 
 void RunLogic(void)
 {
+    if(m->getInput() == ' '){
+        m->setExitFlag(true);
+    }
     if(m->getInput() != '\0')  // if not null character
     {
        p->updatePlayerDir();
@@ -84,20 +88,18 @@ void DrawScreen(void)
     }
     else if(m->getLoseFlagStatus()==true){
         MacUILib_printf("\nYou Lose\n");
+        MacUILib_printf("\nScore: %d\n", m->getScore());
+        MacUILib_printf("\nPress 'Space' to quit. \n");
     }
     else{
+        MacUILib_clearScreen();
         int board[m->getBoardSizeX()][m->getBoardSizeY()];
         objPos nFood;
         food->getFoodPos(nFood);
         for(int i = 0; i<m->getBoardSizeX(); i++){
             for(int j = 0; j<m->getBoardSizeY(); j++){
-                if(i == p->getHead().x && j == p->getHead().y){
+                if(inSnackBody(p->getPlayerPos(), i, j) == true){
                     board[i][j] = 1;
-                    for(int k = 1; k < p->getPlayerPos()->getSize(); k++){
-                        objPos temp;
-                        p->getPlayerPos()->getElement(temp, k);
-                        board[temp.x][temp.y] = 1;
-                    }
                 }
                 else if(i == nFood.x && j == nFood.y){
                     board[i][j] = 2;
@@ -121,11 +123,13 @@ void DrawScreen(void)
                 else if(board[i][j] == 2){
                     MacUILib_printf("%c", nFood.symbol);
                 }
-                else{
+                else if (board[i][j]==0){
                     MacUILib_printf(" ");
                 }
             }
         }
+        MacUILib_printf("\nScore: %d\n", m->getScore());
+        MacUILib_printf("\nPress 'Space' to quit. \n");
     }
 }
 
@@ -146,3 +150,15 @@ void CleanUp(void)
     delete[] food;
 }
 
+bool inSnackBody(objPosArrayList* body, int x, int y)
+{
+	objPos part;
+	for (int i = 0; i < body->getSize(); i++)
+	{
+		body->getElement(part, i);
+		if (part.getX() == x && part.getY() == y) {
+			return true;
+		}
+	}
+	return false;
+}

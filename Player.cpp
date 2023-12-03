@@ -84,18 +84,18 @@ void Player::movePlayer()
     default:
         return;
     }
-    if (x < 0) {
-        x = gameMecRef->getBoardSizeX() - 1;
+    if (x < 1) {
+        x = gameMecRef->getBoardSizeX() - 2;
     }
-    else if (x >= gameMecRef->getBoardSizeX()) {
-        x = 0;
+    else if (x >= gameMecRef->getBoardSizeX()-1) {
+        x = 1;
     }
 
-    if (y < 0) {
-        y = gameMecRef->getBoardSizeY() - 1;
+    if (y < 1) {
+        y = gameMecRef->getBoardSizeY() - 2;
     }
-    else if (y >= gameMecRef->getBoardSizeY()) {
-        y = 0;
+    else if (y >= gameMecRef->getBoardSizeY()-1) {
+        y = 1;
     }
     tmp.setObjPos(x, y, tmp.getSymbol());
     playerPosList->insertHead(tmp);
@@ -117,32 +117,32 @@ void Player::eatFood()
     switch (myDir)
     {
     case UP:
-        x -= 1;
-        break;
-    case DOWN:
-        x += 1;
-        break;
-    case LEFT:
         y -= 1;
         break;
-    case RIGHT:
+    case DOWN:
         y += 1;
+        break;
+    case LEFT:
+        x -= 1;
+        break;
+    case RIGHT:
+        x += 1;
         break;
     default:
         return;
     }
-    if (x < 0) {
-        x = gameMecRef->getBoardSizeX() - 1;
+    if (x < 1) {
+        x = gameMecRef->getBoardSizeX() - 2;
     }
-    else if (x >= gameMecRef->getBoardSizeX()) {
-        x = 0;
+    else if (x >= gameMecRef->getBoardSizeX()-1) {
+        x = 1;
     }
 
-    if (y < 0) {
-        y = gameMecRef->getBoardSizeY() - 1;
+    if (y < 1) {
+        y = gameMecRef->getBoardSizeY() - 2;
     }
-    else if (y >= gameMecRef->getBoardSizeY()) {
-        y = 0;
+    else if (y >= gameMecRef->getBoardSizeY()-1) {
+        y = 1;
     }
     tmp.setObjPos(x, y, tmp.getSymbol());
     playerPosList->insertHead(tmp);
