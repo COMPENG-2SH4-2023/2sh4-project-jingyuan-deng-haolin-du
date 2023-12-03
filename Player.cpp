@@ -1,12 +1,13 @@
 #include "Player.h"
 
 
-Player::Player(gameMechanics* thisGMRef)
+Player::Player(GameMechs* thisGMRef)
 {
     gameMecRef = thisGMRef;
     myDir = STOP;
     playerPosList = new objPosArrayList();
-    playerPosList->insertHead(objPos(rand() % thisGMRef->getBoardSizeX(), rand() % thisGMRef->getBoardSizeY(), SNACK_SIGN));
+    objPos aPos(rand() % thisGMRef->getBoardSizeX(), rand() % thisGMRef->getBoardSizeY(), SNACK_SIGN);
+    playerPosList->insertHead(aPos);
     // more actions to be included
 }
 
@@ -14,7 +15,7 @@ Player::Player(gameMechanics* thisGMRef)
 Player::~Player()
 {
     // delete any heap members here
-    delete playerPosList;
+    delete[] playerPosList;
 }
 
 objPosArrayList* Player::getPlayerPos()
@@ -69,16 +70,16 @@ void Player::movePlayer()
     switch (myDir)
     {
     case UP:
-        x -= 1;
-        break;
-    case DOWN:
-        x += 1;
-        break;
-    case LEFT:
         y -= 1;
         break;
-    case RIGHT:
+    case DOWN:
         y += 1;
+        break;
+    case LEFT:
+        x -= 1;
+        break;
+    case RIGHT:
+        x += 1;
         break;
     default:
         return;
@@ -155,7 +156,7 @@ bool Player::eatSelf()
     {
         playerPosList->getElement(body, i);
         if (body.isPosEqual(&head)) {
-            gameMecRef->setLoseFlag();
+            gameMecRef->setLoseFlag(true);
             return true;
         }
     }

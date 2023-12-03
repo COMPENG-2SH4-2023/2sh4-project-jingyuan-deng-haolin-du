@@ -10,6 +10,7 @@
 using namespace std;
 
 
+
 class GameMechs
 {
     // Construct the remaining declaration from the project manual.
@@ -31,12 +32,11 @@ class GameMechs
     public:
         GameMechs();
         GameMechs(int boardX, int boardY);
-        ~GameMechs();
         
         bool getExitFlagStatus();
         bool getLoseFlagStatus();
-        void setExitTrue();
-        void setLoseFlag();
+        void setExitFlag(bool status);
+        void setLoseFlag(bool status);
 
         char getInput();
         void setInput(char this_input);

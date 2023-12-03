@@ -5,6 +5,7 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 
+#define SNACK_SIGN '@'
 class Player
 {
     // Construct the remaining declaration from the project manual.
@@ -19,16 +20,19 @@ class Player
         Player(GameMechs* thisGMRef);
         ~Player();
 
-        void getPlayerPos(objPos &returnPos); // Upgrade this in iteration 3.
+        objPosArrayList* getPlayerPos(); // Upgrade this in iteration 3.
         void updatePlayerDir();
         void movePlayer();
+        objPos getHead();
+        void eatFood();
+        bool eatSelf();
 
     private:
-        objPos playerPos;   // Upgrade this in iteration 3.       
+        objPosArrayList* playerPosList;   // Upgrade this in iteration 3.       
         enum Dir myDir;
 
         // Need a reference to the Main Game Mechanisms
-        GameMechs* mainGameMechsRef;
+        GameMechs* gameMecRef;
 };
 
 #endif
