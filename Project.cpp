@@ -142,6 +142,7 @@ void DrawScreen(void)
             }
         }
         MacUILib_printf("\nScore: %d\n", m->getScore());
+        MacUILib_printf("\no + 1 score, $ + 10 score \n");
         MacUILib_printf("\nPress 'Space' to quit. \n");
     }
 }
